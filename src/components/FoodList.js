@@ -1,7 +1,12 @@
 import "./FoodList.css";
 
+const formatDate = (value) => {
+  const date = new Date(value);
+  return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}`;
+};
+
 const FoodListItem = ({ item }) => {
-  const { imgUrl, title, calorie, content } = item;
+  const { imgUrl, title, calorie, content, createdAt } = item;
 
   return (
     <div className='FoodListItem'>
@@ -9,6 +14,7 @@ const FoodListItem = ({ item }) => {
       <div>{title}</div>
       <div>{calorie}</div>
       <div>{content}</div>
+      <div>{formatDate(createdAt)}</div>
     </div>
   );
 };
