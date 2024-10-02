@@ -4,7 +4,7 @@ const FoodListItem = ({ item }) => {
   const { imgUrl, title, calorie, content } = item;
 
   return (
-    <div>
+    <div className='FoodListItem'>
       <img src={imgUrl} alt={title} />
       <div>{title}</div>
       <div>{calorie}</div>
@@ -15,7 +15,7 @@ const FoodListItem = ({ item }) => {
 
 const FoodList = ({ items }) => {
   return (
-    <ul>
+    <ul className='FoodList'>
       {items.map((item) => (
         <li key={item.id}>
           <FoodListItem item={item} />
