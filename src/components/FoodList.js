@@ -1,3 +1,5 @@
+import "./FoodList.css";
+
 const FoodListItem = ({ item }) => {
   const { imgUrl, title, calorie, content } = item;
 
