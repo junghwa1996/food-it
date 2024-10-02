@@ -14,7 +14,10 @@
 │  └─ index.html
 └─ src
    ├─ App.js
-   └─ index.js
+   ├─ components
+   │  └─ FoodList.js
+   ├─ index.js
+   └─ mock.json
 ```
 
 ## 프로젝트 설치 명령어
