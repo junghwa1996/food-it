@@ -16,6 +16,8 @@ function App() {
   const [cursor, setCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
+  const [search, setSearch] = useState("");
+  const [isSearch, setIsSearch] = useState(false);
 
   const handleCreatedClick = () => setOrder("createdAt");
 
@@ -41,6 +43,11 @@ function App() {
       foods,
       paging: { nextCursor },
     } = result;
+
+    if (foods.length === 0) {
+      setIsSearch(true);
+    }
+
     if (!options.cursor) {
       setItems(foods);
     } else {
@@ -50,14 +57,19 @@ function App() {
   };
 
   const handleLoadMore = () => {
-    handleLoad({ order, cursor });
+    handleLoad({ order, cursor, search });
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setSearch(e.target["search"].value);
   };
 
   const sortItem = items.sort((a, b) => b[order] - a[order]);
 
   useEffect(() => {
-    handleLoad({ order });
-  }, [order]);
+    handleLoad({ order, search });
+  }, [order, search]);
 
   return (
     <div>
@@ -65,6 +77,11 @@ function App() {
         <button onClick={handleCreatedClick}>생성일순</button>
         <button onClick={handleCalorieClick}>칼로리순</button>
       </div>
+      <form onSubmit={handleSearchSubmit}>
+        <input name='search' />
+        <button type='submit'>검색</button>
+        {isSearch && <p>검색 결과가 없습니다.</p>}
+      </form>
       <FoodList items={sortItem} onDelete={handleDelete} />
       {cursor && (
         <button disabled={isLoading} onClick={handleLoadMore}>
