@@ -1,6 +1,6 @@
 import { useState } from "react";
 import FoodList from "./components/FoodList";
-import items from "./mock.json";
+import mockItems from "./mock.json";
 
 /** mock.json
  * imgUrl : 이미지
@@ -12,18 +12,23 @@ import items from "./mock.json";
  */
 
 function App() {
+  const [items, setItems] = useState(mockItems);
   const [order, setOrder] = useState("createdAt");
   const sortItem = items.sort((a, b) => b[order] - a[order]);
 
   const handleCreatedClick = () => setOrder("createdAt");
   const handleCalorieClick = () => setOrder("calorie");
+  const handleDelete = (id) => {
+    const newItems = items.filter((item) => item.id !== id);
+    setItems(newItems);
+  };
   return (
     <div>
       <div>
         <button onClick={handleCreatedClick}>생성일순</button>
         <button onClick={handleCalorieClick}>칼로리순</button>
       </div>
-      <FoodList items={sortItem} />
+      <FoodList items={sortItem} onDelete={handleDelete} />
     </div>
   );
 }
