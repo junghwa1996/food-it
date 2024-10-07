@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import FoodList from "./FoodList";
 import { getFoodsList } from "../api";
+import FoodForm from "./FoodForm";
 
 /** mock.json
  * imgUrl : 이미지
@@ -73,10 +74,9 @@ function App() {
 
   return (
     <div>
-      <div>
-        <button onClick={handleCreatedClick}>생성일순</button>
-        <button onClick={handleCalorieClick}>칼로리순</button>
-      </div>
+      <FoodForm />
+      <button onClick={handleCreatedClick}>생성일순</button>
+      <button onClick={handleCalorieClick}>칼로리순</button>
       <form onSubmit={handleSearchSubmit}>
         <input name='search' />
         <button type='submit'>검색</button>
