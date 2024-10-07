@@ -9,7 +9,10 @@ function FileInput({ name, value, onChange }) {
   };
 
   const handleClearClick = () => {
-    inputRef.current.value = "";
+    const inputNode = inputRef.current;
+    if (!inputNode) return; // 검증
+
+    inputNode.value = "";
     onChange(name, null);
   };
   return (
