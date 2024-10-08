@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import FoodList from "./FoodList";
-import { getFoodsList, createFood, updateFood } from "../api";
+import { getFoodsList, createFood, updateFood, deleteFood } from "../api";
 import FoodForm from "./FoodForm";
 
 /** mock.json
@@ -24,9 +24,10 @@ function App() {
 
   const handleCalorieClick = () => setOrder("calorie");
 
-  const handleDelete = (id) => {
-    const newItems = items.filter((item) => item.id !== id);
-    setItems(newItems);
+  const handleDelete = async (id) => {
+    const result = await deleteFood(id);
+    if (!result) return;
+    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
   const handleLoad = async (options) => {
