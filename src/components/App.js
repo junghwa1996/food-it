@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import FoodList from "./FoodList";
-import { getFoodsList } from "../api";
+import { getFoodsList, createFood, updateFood } from "../api";
 import FoodForm from "./FoodForm";
 
 /** mock.json
@@ -66,8 +66,19 @@ function App() {
     setSearch(e.target["search"].value);
   };
 
-  const handleCreateSuccess = (food) => {
+  const handleSubmitSuccess = (food) => {
     setItems((prevItem) => [food, ...prevItem]);
+  };
+
+  const handleUpdateSuccess = (food) => {
+    setItems((prevItems) => {
+      const splitIdx = prevItems.findIndex((item) => item.id === food.id);
+      return [
+        ...prevItems.slice(0, splitIdx),
+        food,
+        ...prevItems.slice(splitIdx + 1),
+      ];
+    });
   };
 
   const sortItem = items.sort((a, b) => b[order] - a[order]);
@@ -78,7 +89,7 @@ function App() {
 
   return (
     <div>
-      <FoodForm onSubmitSuccess={handleCreateSuccess} />
+      <FoodForm onSubmit={createFood} onSubmitSuccess={handleSubmitSuccess} />
       <button onClick={handleCreatedClick}>생성일순</button>
       <button onClick={handleCalorieClick}>칼로리순</button>
       <form onSubmit={handleSearchSubmit}>
@@ -86,7 +97,12 @@ function App() {
         <button type='submit'>검색</button>
         {isSearch && <p>검색 결과가 없습니다.</p>}
       </form>
-      <FoodList items={sortItem} onDelete={handleDelete} />
+      <FoodList
+        items={sortItem}
+        onDelete={handleDelete}
+        onUpdate={updateFood}
+        onUpdateSuccess={handleUpdateSuccess}
+      />
       {cursor && (
         <button disabled={isLoading} onClick={handleLoadMore}>
           더보기

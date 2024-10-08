@@ -1,13 +1,66 @@
+import { useState } from "react";
 import "./FoodList.css";
+import FoodForm from "./FoodForm";
 
 const formatDate = (value) => {
   const date = new Date(value);
   return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}`;
 };
 
-const FoodListItem = ({ item, onDelete }) => {
+function FoodList({ items, onDelete, onUpdate, onUpdateSuccess }) {
+  // 수정할 id 값 상태
+  const [editingId, setEditingId] = useState(null);
+
+  const handleCancel = () => {
+    setEditingId(null);
+  };
+
+  return (
+    <ul className='FoodList'>
+      {items.map((item) => {
+        if (item.id === editingId) {
+          const { id, imgUrl, title, calorie, content } = item;
+          const initialValue = { imgUrl: null, title, calorie, content };
+
+          const handleSubmit = (formData) => onUpdate(id, formData);
+
+          const handleSubmitSuccess = (food) => {
+            onUpdateSuccess(food);
+            setEditingId(null);
+          };
+          return (
+            <li key={item.id}>
+              <FoodForm
+                initialValue={initialValue}
+                initialPreview={imgUrl}
+                onCancel={handleCancel}
+                onSubmit={handleSubmit}
+                onSubmitSuccess={handleSubmitSuccess}
+              />
+            </li>
+          );
+        }
+        return (
+          <li key={item.id}>
+            <FoodListItem
+              item={item}
+              onEdit={setEditingId}
+              onDelete={onDelete}
+            />
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function FoodListItem({ item, onEdit, onDelete }) {
   const { imgUrl, title, calorie, content, createdAt } = item;
   const handleDeleteClick = () => onDelete(item.id);
+
+  const handleEditClick = () => {
+    onEdit(item.id); // onEdit() = setEditingId()
+  };
 
   return (
     <div className='FoodListItem'>
@@ -16,21 +69,10 @@ const FoodListItem = ({ item, onDelete }) => {
       <div>{calorie}</div>
       <div>{content}</div>
       <div>{formatDate(createdAt)}</div>
+      <button onClick={handleEditClick}>수정</button>
       <button onClick={handleDeleteClick}>삭제</button>
     </div>
   );
-};
-
-const FoodList = ({ items, onDelete }) => {
-  return (
-    <ul className='FoodList'>
-      {items.map((item) => (
-        <li key={item.id}>
-          <FoodListItem item={item} onDelete={onDelete} />
-        </li>
-      ))}
-    </ul>
-  );
-};
+}
 
 export default FoodList;
