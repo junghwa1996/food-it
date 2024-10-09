@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import FoodList from "./FoodList";
 import { getFoodsList, createFood, updateFood, deleteFood } from "../api";
 import FoodForm from "./FoodForm";
+import { LocaleProvider } from "../context/LocaleContext";
+import LocaleSelect from "./LocaleSelect";
 
 /** mock.json
  * imgUrl : 이미지
@@ -89,28 +91,31 @@ function App() {
   }, [order, search]);
 
   return (
-    <div>
-      <FoodForm onSubmit={createFood} onSubmitSuccess={handleSubmitSuccess} />
-      <button onClick={handleCreatedClick}>생성일순</button>
-      <button onClick={handleCalorieClick}>칼로리순</button>
-      <form onSubmit={handleSearchSubmit}>
-        <input name='search' />
-        <button type='submit'>검색</button>
-        {isSearch && <p>검색 결과가 없습니다.</p>}
-      </form>
-      <FoodList
-        items={sortItem}
-        onDelete={handleDelete}
-        onUpdate={updateFood}
-        onUpdateSuccess={handleUpdateSuccess}
-      />
-      {cursor && (
-        <button disabled={isLoading} onClick={handleLoadMore}>
-          더보기
-        </button>
-      )}
-      {loadingError?.message && <span>{loadingError.message}</span>}
-    </div>
+    <LocaleProvider defaultValue="ko">
+      <div>
+        <LocaleSelect />
+        <FoodForm onSubmit={createFood} onSubmitSuccess={handleSubmitSuccess} />
+        <button onClick={handleCreatedClick}>생성일순</button>
+        <button onClick={handleCalorieClick}>칼로리순</button>
+        <form onSubmit={handleSearchSubmit}>
+          <input name="search" />
+          <button type="submit">검색</button>
+          {isSearch && <p>검색 결과가 없습니다.</p>}
+        </form>
+        <FoodList
+          items={sortItem}
+          onDelete={handleDelete}
+          onUpdate={updateFood}
+          onUpdateSuccess={handleUpdateSuccess}
+        />
+        {cursor && (
+          <button disabled={isLoading} onClick={handleLoadMore}>
+            더보기
+          </button>
+        )}
+        {loadingError?.message && <span>{loadingError.message}</span>}
+      </div>
+    </LocaleProvider>
   );
 }
 

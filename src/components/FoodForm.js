@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FileInput from "./FileInput";
+import useTranslate from "../hooks/useTranslate";
 
 const sanitize = (type, value) => {
   switch (type) {
@@ -27,6 +28,7 @@ function FoodForm({
   const [values, setValues] = useState(initialValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittingError, setSubmittingError] = useState(null);
+  const t = useTranslate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,30 +64,30 @@ function FoodForm({
   return (
     <form onSubmit={handleSubmit}>
       <FileInput
-        name='imgFile'
+        name="imgFile"
         value={values.imgFile}
         onChange={handleChange}
         initialPreview={initialPreview}
       />
-      <input name='title' value={values.title} onChange={handleInputChange} />
+      <input name="title" value={values.title} onChange={handleInputChange} />
       <input
-        type='number'
-        name='calorie'
+        type="number"
+        name="calorie"
         value={values.calorie}
         onChange={handleInputChange}
       />
       <input
-        name='content'
+        name="content"
         value={values.content}
         onChange={handleInputChange}
       />
       {onCancel && (
-        <button type='button' onClick={onCancel}>
-          취소
+        <button type="button" onClick={onCancel}>
+          {t("cancel button")}
         </button>
       )}
-      <button type='submit' disabled={isSubmitting}>
-        확인
+      <button type="submit" disabled={isSubmitting}>
+        {t("confirm button")}
       </button>
       {submittingError?.message && <div>{submittingError.message}</div>}
     </form>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./FoodList.css";
 import FoodForm from "./FoodForm";
+import useTranslate from "../hooks/useTranslate";
 
 const formatDate = (value) => {
   const date = new Date(value);
@@ -16,7 +17,7 @@ function FoodList({ items, onDelete, onUpdate, onUpdateSuccess }) {
   };
 
   return (
-    <ul className='FoodList'>
+    <ul className="FoodList">
       {items.map((item) => {
         if (item.id === editingId) {
           const { id, imgUrl, title, calorie, content } = item;
@@ -56,6 +57,8 @@ function FoodList({ items, onDelete, onUpdate, onUpdateSuccess }) {
 
 function FoodListItem({ item, onEdit, onDelete }) {
   const { imgUrl, title, calorie, content, createdAt } = item;
+  const t = useTranslate();
+
   const handleDeleteClick = () => onDelete(item.id);
 
   const handleEditClick = () => {
@@ -63,14 +66,14 @@ function FoodListItem({ item, onEdit, onDelete }) {
   };
 
   return (
-    <div className='FoodListItem'>
+    <div className="FoodListItem">
       <img src={imgUrl} alt={title} />
       <div>{title}</div>
       <div>{calorie}</div>
       <div>{content}</div>
       <div>{formatDate(createdAt)}</div>
-      <button onClick={handleEditClick}>수정</button>
-      <button onClick={handleDeleteClick}>삭제</button>
+      <button onClick={handleEditClick}>{t("edit button")}</button>
+      <button onClick={handleDeleteClick}>{t("delete button")}</button>
     </div>
   );
 }

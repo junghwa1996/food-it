@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import useTranslate from "../hooks/useTranslate";
 
 function FileInput({ name, value, initialPreview, onChange }) {
   const inputRef = useRef();
   const [preview, setPreview] = useState(initialPreview);
+  const t = useTranslate();
 
   const handleChange = (e) => {
     const file = e.target.files[0];
@@ -30,15 +32,15 @@ function FileInput({ name, value, initialPreview, onChange }) {
   }, [value, initialPreview]);
   return (
     <div>
-      <img src={preview} alt='이미지 미리보기' />
+      <img src={preview} alt="이미지 미리보기" />
       <input
-        type='file'
-        accept='image/png, image/jpeg'
+        type="file"
+        accept="image/png, image/jpeg"
         ref={inputRef}
         onChange={handleChange}
       />
-      <button type='button' onClick={handleClearClick}>
-        삭제
+      <button type="button" onClick={handleClearClick}>
+        {t("delete button")}
       </button>
     </div>
   );
